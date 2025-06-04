@@ -13,7 +13,7 @@
 
     <groupId>com.vladsch.flexmark</groupId>
     <artifactId>flexmark-java</artifactId>
-    <version>0.64.8</version>
+    <version>antidot-0.64.9</version>
     <name>flexmark-java</name>
     <description>
         Java re-implementation of commonmark-java based parser, with AST reflecting source elements, full source position tracking, greater parser extensibility.
@@ -91,15 +91,21 @@
         <nexus.staging.autoRelease>false</nexus.staging.autoRelease>
     </properties>
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
+    <repositories>
         <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <id>gitlab-maven</id>
+            <url>https://scm.mrs.antidot.net/api/v4/projects/672/packages/maven</url>
         </repository>
+    </repositories>
+    <distributionManagement>
+        <repository>
+            <id>gitlab-maven</id>
+            <url>https://scm.mrs.antidot.net/api/v4/projects/672/packages/maven</url>
+        </repository>
+        <snapshotRepository>
+            <id>gitlab-maven</id>
+            <url>https://gitlab.example.com/api/v4/projects/672/packages/maven</url>
+        </snapshotRepository>
     </distributionManagement>
 
     <build>

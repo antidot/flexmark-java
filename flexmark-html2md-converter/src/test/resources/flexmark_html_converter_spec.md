@@ -3048,6 +3048,26 @@ table where all rows end with colspan 0
 ````````````````````````````````
 
 
+table with a negative colspan
+
+```````````````````````````````` example Tables: 53
+|   Abc   |   Def   |
+|---------|---------|
+| no span | no span |
+
+.
+<table>
+  <thead>
+    <tr><th colspan="-7">Abc</th><th>Def</th></tr>
+</tr>
+  </thead>
+  <tbody>
+    <tr><td>no span</td><td>no span</td></tr>
+  </tbody>
+</table>
+````````````````````````````````
+
+
 ## Definition Lists
 
 a definition in a block quote

@@ -43,7 +43,7 @@ following sample:
 <dependency>
     <groupId>com.vladsch.flexmark</groupId>
     <artifactId>flexmark-all</artifactId>
-    <version>antidot-0.64.9</version>
+    <version>antidot-0.64.10</version>
 </dependency>
 ```
 

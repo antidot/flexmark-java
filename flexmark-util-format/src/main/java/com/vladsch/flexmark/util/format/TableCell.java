@@ -86,7 +86,7 @@ public class TableCell {
         BasedSequence useMarker = this.openMarker.isEmpty() ? this.closeMarker.subSequence(0, 0) : this.openMarker.subSequence(this.openMarker.length());
         this.text = chars.isEmpty() && chars != BasedSequence.NULL ? PrefixedSubSequence.prefixOf(" ", useMarker) : chars;
         this.rowSpan = rowSpan;
-        this.columnSpan = columnSpan;
+        this.columnSpan = correctColspan(columnSpan);
         this.alignment = alignment != null ? alignment : CellAlignment.NONE;
         this.trackedTextOffset = trackedTextOffset;
         this.spanTrackedOffset = spanTrackedOffset;
@@ -102,7 +102,7 @@ public class TableCell {
         BasedSequence useMarker = this.openMarker.isEmpty() ? this.closeMarker.subSequence(0, 0) : this.openMarker.subSequence(this.openMarker.length());
         this.text = other.text == BasedSequence.NULL ? PrefixedSubSequence.prefixOf(" ", useMarker) : other.text;
         this.rowSpan = rowSpan;
-        this.columnSpan = columnSpan;
+        this.columnSpan = correctColspan(columnSpan);
         this.alignment = alignment != null ? alignment : CellAlignment.NONE;
         this.trackedTextOffset = other.trackedTextOffset;
         this.spanTrackedOffset = other.spanTrackedOffset;
@@ -211,6 +211,10 @@ public class TableCell {
      */
     public int getCellPrefixLength(TableCell previousCell) {
         return getInsideStartOffset(previousCell) - getStartOffset(previousCell);
+    }
+
+    private int correctColspan(int colspan) {
+        return colspan < 0 ? 1 : colspan;
     }
 
     private CharSequence dumpSequence(BasedSequence sequence) {

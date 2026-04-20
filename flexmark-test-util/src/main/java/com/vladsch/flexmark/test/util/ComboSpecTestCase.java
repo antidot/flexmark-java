@@ -11,7 +11,6 @@ import com.vladsch.flexmark.util.format.options.ElementPlacement;
 import com.vladsch.flexmark.util.format.options.ElementPlacementSort;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -96,7 +95,6 @@ public abstract class ComboSpecTestCase extends FullSpecTestCase {
     }
 
     @Test
-    @Ignore
     public void testSpecExample() {
         if (example.isFullSpecExample()) {
             super.testSpecExample();

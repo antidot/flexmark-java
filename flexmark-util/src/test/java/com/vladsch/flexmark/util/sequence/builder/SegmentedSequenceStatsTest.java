@@ -4,14 +4,30 @@ import com.vladsch.flexmark.util.data.MutableDataSet;
 import com.vladsch.flexmark.util.sequence.BasedOptionsHolder;
 import com.vladsch.flexmark.util.sequence.BasedOptionsSequence;
 import com.vladsch.flexmark.util.sequence.BasedSequence;
-import org.junit.Ignore;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.util.Locale;
 
 import static org.junit.Assert.assertEquals;
 
 public class SegmentedSequenceStatsTest {
+    private static Locale savedLocale;
+
+    @BeforeClass
+    public static void setLocale() {
+        savedLocale = Locale.getDefault();
+        Locale.setDefault(Locale.ENGLISH);
+    }
+
+    @AfterClass
+    public static void restoreLocale() {
+        Locale.setDefault(savedLocale);
+    }
+
+
     @Test
-    @Ignore
     public void basic_stats() {
         SegmentedSequenceStats stats = SegmentedSequenceStats.getInstance();
 
@@ -43,7 +59,6 @@ public class SegmentedSequenceStatsTest {
     }
 
     @Test
-    @Ignore
     public void basic_statsCollection() {
         final String sC = "0123456789";
         MutableDataSet options = new MutableDataSet();
@@ -68,7 +83,6 @@ public class SegmentedSequenceStatsTest {
     }
 
     @Test
-    @Ignore
     public void aggregatedStatsBuckets() {
         SegmentedSequenceStats stats = SegmentedSequenceStats.getInstance();
 
@@ -95,7 +109,6 @@ public class SegmentedSequenceStatsTest {
     }
 
     @Test
-    @Ignore
     public void aggregatedStatsNonBased() {
         SegmentedSequenceStats stats = SegmentedSequenceStats.getInstance();
 
@@ -120,7 +133,6 @@ public class SegmentedSequenceStatsTest {
     }
 
     @Test
-    @Ignore
     public void aggregatedStatsSegments() {
         SegmentedSequenceStats stats = SegmentedSequenceStats.getInstance();
 
@@ -145,7 +157,6 @@ public class SegmentedSequenceStatsTest {
     }
 
     @Test
-    @Ignore
     public void aggregatedStatsLength() {
         SegmentedSequenceStats stats = SegmentedSequenceStats.getInstance();
 
@@ -170,7 +181,6 @@ public class SegmentedSequenceStatsTest {
     }
 
     @Test
-    @Ignore
     public void aggregatedStatsOverhead() {
         SegmentedSequenceStats stats = SegmentedSequenceStats.getInstance();
 

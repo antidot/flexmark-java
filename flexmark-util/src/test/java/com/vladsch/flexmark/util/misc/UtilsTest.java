@@ -1,19 +1,31 @@
 package com.vladsch.flexmark.util.misc;
 
 import com.vladsch.flexmark.util.sequence.SequenceUtils;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.ExpectedException;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import static org.junit.Assert.*;
 
 public class UtilsTest {
 
-    @Rule public ExpectedException thrown = ExpectedException.none();
+    private static Locale savedLocale;
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
+    @BeforeClass
+    public static void setLocale() {
+        savedLocale = Locale.getDefault();
+        Locale.setDefault(Locale.ENGLISH);
+    }
+
+    @AfterClass
+    public static void restoreLocale() {
+        Locale.setDefault(savedLocale);
+    }
 
     @Test
     public void testCompareNullable() {
@@ -43,10 +55,10 @@ public class UtilsTest {
 
     @Test
     public void testJoin() {
-        assertEquals("prefixsuffix", Utils.join(new String[] { }, "prefix", "suffix", "$", "#"));
+        assertEquals("prefixsuffix", Utils.join(new String[]{}, "prefix", "suffix", "$", "#"));
         assertEquals("prefixsuffix", Utils.join(new ArrayList<>(), "prefix", "suffix", "        ", "!!!!"));
-        assertEquals("itemPrefix1itemSuffixitemPrefix2itemSuffix", Utils.join(new String[] { "1", "2" }, "", "", "itemPrefix", "itemSuffix"));
-        assertEquals("list#1-#2-end", Utils.join(new String[] { "1", "2" }, "list", "end", "#", "-"));
+        assertEquals("itemPrefix1itemSuffixitemPrefix2itemSuffix", Utils.join(new String[]{"1", "2"}, "", "", "itemPrefix", "itemSuffix"));
+        assertEquals("list#1-#2-end", Utils.join(new String[]{"1", "2"}, "list", "end", "#", "-"));
     }
 
     @Test
@@ -161,7 +173,7 @@ public class UtilsTest {
     public void testRemoveAnyPrefix() {
         assertEquals("", Utils.removeAnyPrefix(null, (String) null));
         assertEquals("testString", Utils.removeAnyPrefix("testString"));
-        assertEquals("testString", Utils.removeAnyPrefix("testString", new String[] { null }));
+        assertEquals("testString", Utils.removeAnyPrefix("testString", new String[]{null}));
         assertEquals("testString!", Utils.removeAnyPrefix("testString!", "!"));
         assertEquals("testStrin!g", Utils.removeAnyPrefix("testStrin!g", "!"));
         assertEquals("testString", Utils.removeAnyPrefix("!testString", "!"));
@@ -219,13 +231,13 @@ public class UtilsTest {
     @Test
     public void testStartsWithNullPointerException1() {
         thrown.expect(NullPointerException.class);
-        Utils.startsWith("?", new String[] { null });
+        Utils.startsWith("?", new String[]{null});
     }
 
     @Test
     public void testStartsWithNullPointerException2() {
         thrown.expect(NullPointerException.class);
-        Utils.startsWith("", new String[] { null });
+        Utils.startsWith("", new String[]{null});
     }
 
     @Test
@@ -256,7 +268,6 @@ public class UtilsTest {
     }
 
     @Test
-    @Ignore
     public void test_parseNumberOrNull() {
         assertEquals(null, SequenceUtils.parseNumberOrNull("0x0001."));
         assertEquals(null, SequenceUtils.parseNumberOrNull("01234567 "));

@@ -1181,16 +1181,22 @@ public class MarkdownTable {
                 CellAlignment alignment1 = adjustCellAlignment(alignment);
 
                 int colonCount = alignment1 == CellAlignment.LEFT || alignment1 == CellAlignment.RIGHT ? 1 : alignment1 == CellAlignment.CENTER ? 2 : 0;
-                int diff = columnWidths[j] - colonCount * options.colonWidth - options.pipeWidth;
-                int dashCount = (delta.value + diff) / options.dashWidth;
-                int dashesOnly = Utils.minLimit(dashCount, options.minSeparatorColumnWidth - colonCount, options.minSeparatorDashes);
-                if (dashCount < dashesOnly) dashCount = dashesOnly;
 
-                if (Math.abs(delta.value + diff - (dashCount + 1) * options.dashWidth) < Math.abs(delta.value + diff - dashCount * options.dashWidth)) {
-                    dashCount++;
+                int dashCount;
+                if (!options.adjustColumnWidth) {
+                    dashCount = Utils.minLimit(options.minSeparatorColumnWidth - colonCount, options.minSeparatorDashes);
+                } else {
+                    int diff = columnWidths[j] - colonCount * options.colonWidth - options.pipeWidth;
+                    dashCount = (delta.value + diff) / options.dashWidth;
+                    int dashesOnly = Utils.minLimit(dashCount, options.minSeparatorColumnWidth - colonCount, options.minSeparatorDashes);
+                    if (dashCount < dashesOnly) dashCount = dashesOnly;
+
+                    if (Math.abs(delta.value + diff - (dashCount + 1) * options.dashWidth) < Math.abs(delta.value + diff - dashCount * options.dashWidth)) {
+                        dashCount++;
+                    }
+
+                    delta.value += diff - dashCount * options.dashWidth;
                 }
-
-                delta.value += diff - dashCount * options.dashWidth;
 
                 int trackedPos;
                 TableCell cell = null;

@@ -1,6 +1,8 @@
 package com.vladsch.flexmark.ext.tables;
 
 import com.vladsch.flexmark.html.HtmlWriter;
+import com.vladsch.flexmark.util.data.DataHolder;
+import com.vladsch.flexmark.util.data.MutableDataSet;
 import com.vladsch.flexmark.util.format.MarkdownTable;
 import com.vladsch.flexmark.util.format.TableFormatOptions;
 import com.vladsch.flexmark.util.format.TrackedOffset;
@@ -2092,6 +2094,65 @@ public class MarkdownTableTest extends MarkdownTableTestBase {
                 "| Syntax highlighting                                                             |   X   |    X     |    |\n" +
                 "", formattedTable.substring(0, offset) + "^" + formattedTable.substring(offset));
         assertEquals(pos - 10, offset);
+    }
+
+    @Test
+    public void test_Separator_NoAdjustColumnWidth_UsesMinimumWidth() {
+        String markdown = "" +
+                "| A Column  | B Column  | C Column  | D Column  |\n" +
+                "|-----------|:----------|:---------:|----------:|\n" +
+                "| data a    | data b    | data c    | data d    |\n";
+
+        DataHolder options = new MutableDataSet()
+                .set(TablesExtension.FORMAT_TABLE_ADJUST_COLUMN_WIDTH, false)
+                .set(TablesExtension.FORMAT_TABLE_MIN_SEPARATOR_COLUMN_WIDTH, 1);
+
+        MarkdownTable table = getTable(markdown, options);
+
+        assertEquals("" +
+                "| A Column | B Column | C Column | D Column |\n" +
+                "|-|:-|:-:|-:|\n" +
+                "| data a | data b | data c | data d |\n", getFormattedTable(table));
+    }
+
+    @Test
+    public void test_Separator_NoAdjustColumnWidth_RespectsMinSeparatorColumnWidth() {
+        String markdown = "" +
+                "| A Column  | B Column  | C Column  | D Column  |\n" +
+                "|-----------|:----------|:---------:|----------:|\n" +
+                "| data a    | data b    | data c    | data d    |\n";
+
+        DataHolder options = new MutableDataSet()
+                .set(TablesExtension.FORMAT_TABLE_ADJUST_COLUMN_WIDTH, false)
+                .set(TablesExtension.FORMAT_TABLE_MIN_SEPARATOR_COLUMN_WIDTH, 5)
+                .set(TablesExtension.FORMAT_TABLE_MIN_SEPARATOR_DASHES, 1);
+
+        MarkdownTable table = getTable(markdown, options);
+
+        assertEquals("" +
+                "| A Column | B Column | C Column | D Column |\n" +
+                "|-----|:----|:---:|----:|\n" +
+                "| data a | data b | data c | data d |\n", getFormattedTable(table));
+    }
+
+    @Test
+    public void test_Separator_NoAdjustColumnWidth_MinSeparatorDashesWins() {
+        String markdown = "" +
+                "| A Column  | B Column  | C Column  | D Column  |\n" +
+                "|-----------|:----------|:---------:|----------:|\n" +
+                "| data a    | data b    | data c    | data d    |\n";
+
+        DataHolder options = new MutableDataSet()
+                .set(TablesExtension.FORMAT_TABLE_ADJUST_COLUMN_WIDTH, false)
+                .set(TablesExtension.FORMAT_TABLE_MIN_SEPARATOR_COLUMN_WIDTH, 3)
+                .set(TablesExtension.FORMAT_TABLE_MIN_SEPARATOR_DASHES, 5);
+
+        MarkdownTable table = getTable(markdown, options);
+
+        assertEquals("" +
+                "| A Column | B Column | C Column | D Column |\n" +
+                "|-----|:-----|:-----:|-----:|\n" +
+                "| data a | data b | data c | data d |\n", getFormattedTable(table));
     }
 
     @Test

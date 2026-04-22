@@ -1113,7 +1113,7 @@ default
 - Add: live templates starting with `.`
 
   | Element | Abbreviation | Expansion |
-  |---------------|-----------------|------------------:|
+  |---|---|--:|
   | Abbreviation | `.abbreviation` | `*[]: ` |
   | Code fence | `.codefence` | \`\`\` ... \`\`\` |
   | Explicit link | `.link` | `[]()` |
@@ -1133,7 +1133,7 @@ default
 - Add: live templates starting with `.`
 
   | Element | Abbreviation | Expansion |
-  |---------------|-----------------|------------------:|
+  |---|---|--:|
   | Abbreviation | `.abbreviation` | `*[]: ` |
   | Code fence | `.codefence` | \`\`\` ... \`\`\` |
   | Explicit link | `.link` | `[]()` |

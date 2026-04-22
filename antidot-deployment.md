@@ -42,6 +42,72 @@ See: [`.github/workflows/ci.yml`](.github/workflows/ci.yml)
 
 The CI does **not** deploy automatically — releases are triggered manually.
 
+## Releasing a new version
+
+### 1. Prerequisites: GitLab credentials
+
+Maven must be able to authenticate against the Antidot GitLab Maven registry. Add a server entry to your local `~/.m2/settings.xml` using a GitLab Personal Access Token with `api` scope:
+
+```xml
+<settings>
+  <servers>
+    <server>
+      <id>gitlab-maven</id>
+      <configuration>
+        <httpHeaders>
+          <property>
+            <name>Private-Token</name>
+            <value>YOUR_GITLAB_PERSONAL_ACCESS_TOKEN</value>
+          </property>
+        </httpHeaders>
+      </configuration>
+    </server>
+  </servers>
+</settings>
+```
+
+The `<id>` must match exactly: `gitlab-maven`.
+
+### 2. Bump the version
+
+The current version is defined at the top of the root `pom.xml`. Use the `versions-maven-plugin` to update all modules at once:
+
+```bash
+mvn versions:set -DnewVersion=antidot-0.64.11
+```
+
+Review the diff, then commit:
+
+```bash
+git add pom.xml '**/pom.xml'
+git commit -m "Bump version to antidot-0.64.11"
+```
+
+### 3. Run the full test suite
+
+```bash
+mvn clean verify
+```
+
+Make sure all tests pass before deploying. The CI also runs `mvn verify` on every push to GitHub.
+
+### 4. Deploy to the Antidot GitLab registry
+
+```bash
+mvn clean deploy -DskipTests
+```
+
+> **Do not use `-Pdeploy`** — that profile is the original upstream Sonatype/OSS profile (GPG signing, Nexus staging) and is not intended for the Antidot internal registry.
+
+This publishes all 58 modules to `https://scm.mrs.antidot.net/api/v4/projects/672/packages/maven`.
+
+### 5. Tag the release on GitHub
+
+```bash
+git tag antidot-0.64.11
+git push origin antidot-0.64.11
+```
+
 ## Known test limitations
 
 Two tests are intentionally disabled:

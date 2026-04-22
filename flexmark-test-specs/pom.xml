@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.vladsch.flexmark</groupId>
         <artifactId>flexmark-java</artifactId>
-        <version>antidot-0.64.10</version>
+        <version>antidot-0.64.11</version>
     </parent>
 
     <artifactId>flexmark-test-specs</artifactId>
